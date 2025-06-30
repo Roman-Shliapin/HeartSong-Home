@@ -16,3 +16,6 @@ li {
 button:focus {
   background-color: beige;
 }
+.first-title {
+  text-align: center;
+}
