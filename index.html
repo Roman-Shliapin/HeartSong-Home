@@ -8,13 +8,89 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon-192.png" type="image/png" />
     <meta name="theme-color" content="#ffffff" />
+    <style>
+      #lyrics-box {
+        margin-top: 20px;
+        padding: 1em;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <h1>Пісня в серці дому</h1>
     <ol>
-      <li><a href="">Великий Бог</a></li>
-      <li><a href="">Як олень</a></li>
-      <li><a href="">Молитва за Україну</a></li>
+      <li>
+        <button type="button" onclick="showLyrics('Великий Бог')">
+          Великий Бог
+        </button>
+      </li>
+      <li>
+        <button type="button" onclick="showLyrics('Як олень')">Як олень</button>
+      </li>
+      <li>
+        <button type="button" onclick="showLyrics('Молитва за Україну')">
+          Молитва за Україну
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          onclick="showLyrics('Славні та великі діла Твої')"
+        >
+          Славні та великі діла Твої
+        </button>
+      </li>
+      <li>
+        <button type="button" onclick="showLyrics('Тобі співа')">
+          Тобі співа
+        </button>
+      </li>
+      <li>
+        <button type="button" onclick="showLyrics('О, душа, заспівай!')">
+          О, душа, заспівай!
+        </button>
+      </li>
+      <li>
+        <button type="button" onclick="showLyrics('Знов схиляюсь і молюсь')">
+          Знов схиляюсь і молюсь
+        </button>
+      </li>
     </ol>
+
+    <div id="lyrics-box" style="display: none">
+      <h2 id="song-title"></h2>
+      <pre id="song-lyrics"></pre>
+    </div>
+    <script>
+      let lyricsData = {};
+
+      // Завантажити lyrics.json при відкритті сторінки
+      fetch("lyrics.json")
+        .then((response) => response.json())
+        .then((data) => {
+          lyricsData = data;
+        });
+
+      let currentlyShown = null;
+
+      function showLyrics(title) {
+        const lyricsBox = document.getElementById("lyrics-box");
+        const titleElem = document.getElementById("song-title");
+        const lyricsElem = document.getElementById("song-lyrics");
+
+        if (currentlyShown === title) {
+          lyricsBox.style.display = "none";
+          currentlyShown = null;
+        } else {
+          titleElem.innerText = title;
+          lyricsElem.innerText =
+            lyricsData[title] || "Текст пісні ще не додано.";
+          lyricsBox.style.display = "block";
+          currentlyShown = title;
+        }
+      }
+    </script>
   </body>
 </html>
