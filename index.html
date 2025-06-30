@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="uk">
+<!DOCTYPE >
+<html lang lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,74 +22,117 @@
     <h1 class="first-title">Пісня в серці дому</h1>
     <ol>
       <li>
-        <button type="button" onclick="showLyrics('Великий Бог')">
+        <button type="button" onclick="toggleLyrics(this, 'Великий Бог')">
           Великий Бог
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
       <li>
-        <button type="button" onclick="showLyrics('Як олень')">Як олень</button>
-      </li>
-      <li>
-        <button type="button" onclick="showLyrics('Молитва за Україну')">
-          Молитва за Україну
+        <button type="button" onclick="toggleLyrics(this, 'Як олень')">
+          Як олень
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
       <li>
         <button
           type="button"
-          onclick="showLyrics('Славні та великі діла Твої')"
+          onclick="toggleLyrics(this, 'Молитва за Україну')"
+        >
+          Молитва за Україну
+        </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
+      </li>
+      <li>
+        <button
+          type="button"
+          onclick="toggleLyrics(this, 'Славні та великі діла Твої')"
         >
           Славні та великі діла Твої
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
       <li>
-        <button type="button" onclick="showLyrics('Тобі співа')">
+        <button type="button" onclick="toggleLyrics(this, 'Тобі співа')">
           Тобі співа
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
       <li>
-        <button type="button" onclick="showLyrics('О, душа, заспівай!')">
+        <button
+          type="button"
+          onclick="toggleLyrics(this, 'О, душа, заспівай!')"
+        >
           О, душа, заспівай!
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
       <li>
-        <button type="button" onclick="showLyrics('Знов схиляюсь і молюсь')">
+        <button
+          type="button"
+          onclick="toggleLyrics(this, 'Знов схиляюсь і молюсь')"
+        >
           Знов схиляюсь і молюсь
         </button>
+        <pre
+          class="lyrics"
+          style="display: none; white-space: pre-wrap; margin-top: 8px"
+        ></pre>
       </li>
     </ol>
 
-    <div id="lyrics-box" style="display: none">
-      <h2 id="song-title"></h2>
-      <pre id="song-lyrics"></pre>
-    </div>
     <script>
       let lyricsData = {};
 
-      // Завантажити lyrics.json при відкритті сторінки
       fetch("lyrics.json")
         .then((response) => response.json())
         .then((data) => {
           lyricsData = data;
         });
 
-      let currentlyShown = null;
+      // Для отслеживания какой текст сейчас открыт
+      let currentlyShownElem = null;
 
-      function showLyrics(title) {
-        const lyricsBox = document.getElementById("lyrics-box");
-        const titleElem = document.getElementById("song-title");
-        const lyricsElem = document.getElementById("song-lyrics");
+      function toggleLyrics(buttonElem, title) {
+        const li = buttonElem.parentElement;
+        const lyricsElem = li.querySelector(".lyrics");
 
-        if (currentlyShown === title) {
-          lyricsBox.style.display = "none";
-          currentlyShown = null;
-        } else {
-          titleElem.innerText = title;
-          lyricsElem.innerText =
-            lyricsData[title] || "Текст пісні ще не додано.";
-          lyricsBox.style.display = "block";
-          currentlyShown = title;
+        // Если этот же текст открыт — скрыть
+        if (
+          currentlyShownElem === lyricsElem &&
+          lyricsElem.style.display === "block"
+        ) {
+          lyricsElem.style.display = "none";
+          currentlyShownElem = null;
+          return;
         }
+
+        // Скрыть предыдущий открытый текст, если есть
+        if (currentlyShownElem) {
+          currentlyShownElem.style.display = "none";
+        }
+
+        // Показать новый текст
+        lyricsElem.innerText = lyricsData[title] || "Текст пісні ще не додано.";
+        lyricsElem.style.display = "block";
+        currentlyShownElem = lyricsElem;
       }
     </script>
   </body>
