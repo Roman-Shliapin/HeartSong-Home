@@ -1,7 +1,7 @@
 {
   "name": "Пісні в Серці Дому",
   "short_name": "HeartSong Home",
-  "start_url": "./index.html",
+  "start_url": "/HeartSong-Home",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
